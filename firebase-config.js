@@ -6,13 +6,13 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebas
 import { getDatabase } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-database.js";
 
 const firebaseConfig = {
-  apiKey: "YOUR_API_KEY_HERE",
-  authDomain: "wc-japan-watch.firebaseapp.com",
-  databaseURL: "https://wc-japan-watch-default-rtdb.asia-southeast1.firebasedatabase.app",
-  projectId: "wc-japan-watch",
-  storageBucket: "wc-japan-watch.appspot.com",
-  messagingSenderId: "YOUR_SENDER_ID",
-  appId: "YOUR_APP_ID"
+  apiKey: "AIzaSyCm7VFWh3now2jLpphkYlNFy7NgWBVOlRo",
+  authDomain: "shooting-schedule-maker.firebaseapp.com",
+  databaseURL: "https://shooting-schedule-maker-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "shooting-schedule-maker",
+  storageBucket: "shooting-schedule-maker.firebasestorage.app",
+  messagingSenderId: "36082667304",
+  appId: "1:36082667304:web:17d6b085efabf1c86674a1d"
 };
 
 const app = initializeApp(firebaseConfig);
