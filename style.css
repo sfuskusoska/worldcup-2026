@@ -139,6 +139,25 @@ body {
   opacity: 0.9;
 }
 
+.prediction-badge {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.badge-done {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.badge-pending {
+  background: #fef3c7;
+  color: #92400e;
+}
+
 /* ===== Coming soon カード ===== */
 .coming-soon {
   opacity: 0.7;
@@ -209,6 +228,170 @@ body {
   font-size: 0.9rem;
   margin-top: 12px;
   text-align: center;
+}
+
+/* ===== 試合前：予想画面 ===== */
+#pre-match-screen {
+  padding: 16px;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.prediction-form-card,
+.results-card {
+  background: var(--color-card);
+  border-radius: var(--radius);
+  padding: 20px;
+  margin-bottom: 16px;
+  box-shadow: var(--shadow-card);
+}
+
+.prediction-form-card h2,
+.results-card h2 {
+  font-size: 1.1rem;
+  margin-bottom: 16px;
+}
+
+.lock-notice {
+  background: #fef3c7;
+  color: #92400e;
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  margin-bottom: 12px;
+}
+
+.score-inputs {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.score-team {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.team-label {
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+.score-inputs input[type="number"] {
+  width: 72px;
+  height: 72px;
+  text-align: center;
+  font-size: 2rem;
+  font-weight: 700;
+  border: 2px solid var(--color-border);
+  border-radius: 10px;
+  color: var(--color-primary);
+}
+
+.score-inputs input[type="number"]:focus {
+  outline: none;
+  border-color: var(--color-primary);
+}
+
+.score-sep {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--color-text-sub);
+  margin-top: 28px;
+}
+
+.first-scorer-row {
+  margin-bottom: 16px;
+}
+
+.first-scorer-row label {
+  display: block;
+  font-size: 0.9rem;
+  color: var(--color-text-sub);
+  margin-bottom: 6px;
+}
+
+.first-scorer-row select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  font-size: 1rem;
+  background: #fff;
+}
+
+#prediction-submit {
+  width: 100%;
+  background: var(--color-primary);
+  color: #fff;
+  padding: 12px;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+#prediction-submit:disabled {
+  background: var(--color-coming-soon);
+  cursor: default;
+}
+
+.prediction-message {
+  margin-top: 10px;
+  font-size: 0.9rem;
+  color: var(--color-secondary);
+  text-align: center;
+}
+
+#chart-container {
+  margin-bottom: 16px;
+}
+
+.vote-count {
+  font-size: 0.9rem;
+  color: var(--color-text-sub);
+  font-weight: 400;
+}
+
+.prediction-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.prediction-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+  background: var(--color-bg);
+  border-radius: 6px;
+  font-size: 0.9rem;
+}
+
+.prediction-item.is-mine {
+  background: #fef2f2;
+  border-left: 3px solid var(--color-primary);
+}
+
+.pred-name {
+  flex: 1;
+  font-weight: 600;
+}
+
+.pred-score {
+  font-weight: 700;
+  color: var(--color-primary);
+}
+
+.pred-scorer {
+  color: var(--color-text-sub);
+  font-size: 0.85rem;
 }
 
 /* ===== フッター ===== */

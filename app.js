@@ -1,10 +1,12 @@
 // ===== ダッシュボード（index.html）のロジック =====
-import { NEXT_JAPAN_MATCH } from "./firebase-config.js";
+import { db, NEXT_JAPAN_MATCH } from "./firebase-config.js";
+import { ref, get } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-database.js";
 
 // ----- 起動 -----
 window.addEventListener("DOMContentLoaded", () => {
   initUserStatus();
   startCountdown();
+  checkPredictionStatus();
 });
 
 // ----- ユーザーステータス表示 -----
@@ -45,4 +47,21 @@ function startCountdown() {
 
   update();
   setInterval(update, 1000);
+}
+
+// ----- 予想済み / 未予想バッジ -----
+async function checkPredictionStatus() {
+  const userId = localStorage.getItem("wc2026:userId");
+  const ctaBtn = document.querySelector(".cta-button");
+  if (!userId || !ctaBtn) return;
+
+  try {
+    const snap = await get(ref(db, `matches/${NEXT_JAPAN_MATCH.id}/predictions/${userId}`));
+    const badge = document.createElement("span");
+    badge.className = `prediction-badge ${snap.exists() ? "badge-done" : "badge-pending"}`;
+    badge.textContent = snap.exists() ? "予想済み ✓" : "未予想";
+    ctaBtn.parentNode.insertBefore(badge, ctaBtn);
+  } catch (e) {
+    // Firebase未接続時はバッジを出さない
+  }
 }

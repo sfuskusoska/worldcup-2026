@@ -32,10 +32,46 @@
       <p id="login-error" class="error-message" hidden></p>
     </section>
 
-    <!-- 試合前：予想画面（Week 2で実装） -->
+    <!-- 試合前：予想画面 -->
     <section id="pre-match-screen" hidden>
-      <h2>スコア予想</h2>
-      <p>Week 2で実装します</p>
+
+      <div class="prediction-form-card">
+        <h2>スコア予想</h2>
+        <p id="lock-notice" class="lock-notice" hidden>キックオフ5分前のため予想はロックされました</p>
+
+        <form id="prediction-form">
+          <div class="score-inputs">
+            <div class="score-team">
+              <span class="team-label">🇯🇵 日本</span>
+              <input type="number" id="score-home" min="0" max="9" value="1" required>
+            </div>
+            <span class="score-sep">−</span>
+            <div class="score-team">
+              <input type="number" id="score-away" min="0" max="9" value="0" required>
+              <span class="team-label">🇳🇱 オランダ</span>
+            </div>
+          </div>
+
+          <div class="first-scorer-row">
+            <label for="first-scorer">最初の得点者（任意）</label>
+            <select id="first-scorer">
+              <option value="">選択しない</option>
+            </select>
+          </div>
+
+          <button type="submit" id="prediction-submit">予想を送る</button>
+        </form>
+        <p id="prediction-message" class="prediction-message" hidden></p>
+      </div>
+
+      <div class="results-card">
+        <h2>みんなの予想 <span id="vote-count" class="vote-count"></span></h2>
+        <div id="chart-container">
+          <canvas id="prediction-chart"></canvas>
+        </div>
+        <div id="prediction-list" class="prediction-list"></div>
+      </div>
+
     </section>
 
     <!-- 試合中：感情ボタン画面（Week 3で実装） -->
@@ -52,6 +88,7 @@
 
   </main>
 
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
   <script type="module" src="firebase-config.js"></script>
   <script type="module" src="jpn-match.js"></script>
 </body>
