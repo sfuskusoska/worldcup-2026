@@ -20,7 +20,7 @@ export const db = getDatabase(app);
 
 // ===== football-data.org API キー =====
 // Day 3 で取得した X-Auth-Token をここに記入
-export const FOOTBALL_DATA_API_KEY = "YOUR_FOOTBALL_DATA_API_KEY";
+export const FOOTBALL_DATA_API_KEY = "da20725829ac4e248c4cdae3e9f6952c";
 
 // ===== 試合定数 =====
 export const NEXT_JAPAN_MATCH = {
