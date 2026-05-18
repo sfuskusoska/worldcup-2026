@@ -1,0 +1,171 @@
+{
+  "venues": [
+    {
+      "id": "azteca",
+      "fifaName": "Estadio Azteca",
+      "commonName": "Estadio Azteca",
+      "city": "Mexico City",
+      "country": "MX",
+      "lat": 19.3029,
+      "lon": -99.1505,
+      "capacity": 87523,
+      "note": "開幕戦・通算3度目のW杯開催"
+    },
+    {
+      "id": "akron",
+      "fifaName": "Estadio Akron",
+      "commonName": "Estadio Akron",
+      "city": "Guadalajara",
+      "country": "MX",
+      "lat": 20.6817,
+      "lon": -103.4625,
+      "capacity": 49850
+    },
+    {
+      "id": "bbva",
+      "fifaName": "Estadio Monterrey",
+      "commonName": "Estadio BBVA",
+      "city": "Monterrey",
+      "country": "MX",
+      "lat": 25.6692,
+      "lon": -100.2447,
+      "capacity": 53500,
+      "note": "日本のチュニジア戦"
+    },
+    {
+      "id": "bc-place",
+      "fifaName": "Vancouver Stadium",
+      "commonName": "BC Place",
+      "city": "Vancouver",
+      "country": "CA",
+      "lat": 49.2767,
+      "lon": -123.1119,
+      "capacity": 54500
+    },
+    {
+      "id": "bmo-field",
+      "fifaName": "Toronto Stadium",
+      "commonName": "BMO Field",
+      "city": "Toronto",
+      "country": "CA",
+      "lat": 43.6332,
+      "lon": -79.4185,
+      "capacity": 45000
+    },
+    {
+      "id": "metlife",
+      "fifaName": "New York New Jersey Stadium",
+      "commonName": "MetLife Stadium",
+      "city": "East Rutherford, NJ",
+      "country": "US",
+      "lat": 40.8135,
+      "lon": -74.0745,
+      "capacity": 82500,
+      "note": "決勝戦の会場"
+    },
+    {
+      "id": "att",
+      "fifaName": "Dallas Stadium",
+      "commonName": "AT&T Stadium",
+      "city": "Arlington, TX",
+      "country": "US",
+      "lat": 32.7473,
+      "lon": -97.0945,
+      "capacity": 80000,
+      "note": "日本のオランダ戦・スウェーデン戦"
+    },
+    {
+      "id": "arrowhead",
+      "fifaName": "Kansas City Stadium",
+      "commonName": "Arrowhead Stadium",
+      "city": "Kansas City, MO",
+      "country": "US",
+      "lat": 39.0489,
+      "lon": -94.4839,
+      "capacity": 76416,
+      "note": "世界一うるさい屋外スポーツ会場（Guinness認定）"
+    },
+    {
+      "id": "nrg",
+      "fifaName": "Houston Stadium",
+      "commonName": "NRG Stadium",
+      "city": "Houston, TX",
+      "country": "US",
+      "lat": 29.6847,
+      "lon": -95.4107,
+      "capacity": 72220
+    },
+    {
+      "id": "lumen",
+      "fifaName": "Seattle Stadium",
+      "commonName": "Lumen Field",
+      "city": "Seattle, WA",
+      "country": "US",
+      "lat": 47.5952,
+      "lon": -122.3316,
+      "capacity": 72000
+    },
+    {
+      "id": "mercedes-benz",
+      "fifaName": "Atlanta Stadium",
+      "commonName": "Mercedes-Benz Stadium",
+      "city": "Atlanta, GA",
+      "country": "US",
+      "lat": 33.7553,
+      "lon": -84.4006,
+      "capacity": 71000
+    },
+    {
+      "id": "sofi",
+      "fifaName": "Los Angeles Stadium",
+      "commonName": "SoFi Stadium",
+      "city": "Inglewood, CA",
+      "country": "US",
+      "lat": 33.9534,
+      "lon": -118.3387,
+      "capacity": 70000
+    },
+    {
+      "id": "lincoln-financial",
+      "fifaName": "Philadelphia Stadium",
+      "commonName": "Lincoln Financial Field",
+      "city": "Philadelphia, PA",
+      "country": "US",
+      "lat": 39.9008,
+      "lon": -75.1675,
+      "capacity": 69796
+    },
+    {
+      "id": "gillette",
+      "fifaName": "Boston Stadium",
+      "commonName": "Gillette Stadium",
+      "city": "Foxborough, MA",
+      "country": "US",
+      "lat": 42.0909,
+      "lon": -71.2643,
+      "capacity": 65878
+    },
+    {
+      "id": "levis",
+      "fifaName": "San Francisco Bay Area Stadium",
+      "commonName": "Levi's Stadium",
+      "city": "Santa Clara, CA",
+      "country": "US",
+      "lat": 37.4032,
+      "lon": -121.9698,
+      "capacity": 68500
+    },
+    {
+      "id": "hard-rock",
+      "fifaName": "Miami Stadium",
+      "commonName": "Hard Rock Stadium",
+      "city": "Miami Gardens, FL",
+      "country": "US",
+      "lat": 25.9580,
+      "lon": -80.2389,
+      "capacity": 65326,
+      "note": "3位決定戦の会場"
+    }
+  ],
+  "note": "座標は概算。Phase 2のマップ表示前にGoogle Mapsで精度確認することを推奨。"
+}

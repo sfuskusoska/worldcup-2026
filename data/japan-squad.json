@@ -1,0 +1,20 @@
+{
+  "note": "暫定リスト。最終メンバー発表後に必ず更新すること。発表時期は通常キックオフ2〜3週間前。",
+  "lastUpdated": "2026-05-18",
+  "players": [
+    { "no": 9, "name": "上田綺世", "nameEn": "Ayase Ueda", "position": "FW" },
+    { "no": 11, "name": "久保建英", "nameEn": "Takefusa Kubo", "position": "MF" },
+    { "no": 8, "name": "南野拓実", "nameEn": "Takumi Minamino", "position": "MF" },
+    { "no": 14, "name": "伊東純也", "nameEn": "Junya Ito", "position": "FW" },
+    { "no": 15, "name": "鎌田大地", "nameEn": "Daichi Kamada", "position": "MF" },
+    { "no": 20, "name": "町野修斗", "nameEn": "Shuto Machino", "position": "FW" },
+    { "no": 21, "name": "堂安律", "nameEn": "Ritsu Doan", "position": "MF" },
+    { "no": 7, "name": "三笘薫", "nameEn": "Kaoru Mitoma", "position": "MF" },
+    { "no": 17, "name": "田中碧", "nameEn": "Ao Tanaka", "position": "MF" },
+    { "no": 6, "name": "遠藤航", "nameEn": "Wataru Endo", "position": "MF" },
+    { "no": 18, "name": "前田大然", "nameEn": "Daizen Maeda", "position": "FW" },
+    { "no": 19, "name": "細谷真大", "nameEn": "Mao Hosoya", "position": "FW" },
+    { "no": "OG", "name": "オウンゴール", "nameEn": "Own Goal", "position": "—" },
+    { "no": "NS", "name": "誰も得点なし", "nameEn": "No Score", "position": "—" }
+  ]
+}

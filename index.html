@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ワールドカップ 2026</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="site-header">
+    <h1>⚽ ワールドカップ 2026</h1>
+    <div id="user-status" class="user-status">未ログイン</div>
+  </header>
+
+  <main id="dashboard">
+
+    <!-- Phase 1: 日本戦カード（メイン機能） -->
+    <section id="japan-match-card" class="card card-primary">
+      <h2>🇯🇵 次の日本戦</h2>
+      <div id="japan-match-content">
+        <div class="match-row">
+          <span class="team">日本 🇯🇵</span>
+          <span class="vs">vs</span>
+          <span class="team">🇳🇱 オランダ</span>
+        </div>
+        <div class="match-date">6月15日(月) 5:00 キックオフ</div>
+        <div id="countdown" class="countdown">--日 --時間 --分</div>
+        <div class="match-venue">AT&T Stadium (Arlington, TX)</div>
+      </div>
+      <a href="jpn-match.html" class="cta-button">みんなで応援する →</a>
+    </section>
+
+    <!-- Phase 2: 世界マップ（現在は Coming soon） -->
+    <section id="world-map-section" class="card card-secondary coming-soon">
+      <h2>🌎 今、世界では</h2>
+      <p class="coming-soon-label">Phase 2で実装予定</p>
+      <p class="coming-soon-desc">
+        全16会場のマップ、試合中の試合、次のキックオフを表示します。
+      </p>
+    </section>
+
+    <!-- Phase 2: 全試合表（現在は Coming soon） -->
+    <section id="fixtures-section" class="card card-secondary coming-soon">
+      <h2>📅 全試合表</h2>
+      <p class="coming-soon-label">Phase 2で実装予定</p>
+      <p class="coming-soon-desc">
+        グループステージ全72試合 + ノックアウトステージの一覧を表示します。
+      </p>
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    <small>身内向け試験運用版 / 2026 FIFA World Cup</small>
+  </footer>
+
+  <script type="module" src="firebase-config.js"></script>
+  <script type="module" src="app.js"></script>
+</body>
+</html>

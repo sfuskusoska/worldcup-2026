@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>日本戦応援 - ワールドカップ 2026</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="site-header">
+    <a href="index.html" class="back-link">← ダッシュボードへ</a>
+    <h1>🇯🇵 日本 vs オランダ</h1>
+    <div id="kickoff-info">6月15日(月) 5:00 キックオフ</div>
+  </header>
+
+  <main id="app">
+
+    <!-- ログイン画面 -->
+    <section id="login-screen">
+      <h2>参加するには</h2>
+      <form id="login-form" onsubmit="return false;">
+        <label>
+          ニックネーム
+          <input type="text" id="nickname-input" maxlength="20" required>
+        </label>
+        <label>
+          合言葉
+          <input type="password" id="passphrase-input" required>
+        </label>
+        <button type="submit" id="login-button">参加する</button>
+      </form>
+      <p id="login-error" class="error-message" hidden></p>
+    </section>
+
+    <!-- 試合前：予想画面（Week 2で実装） -->
+    <section id="pre-match-screen" hidden>
+      <h2>スコア予想</h2>
+      <p>Week 2で実装します</p>
+    </section>
+
+    <!-- 試合中：感情ボタン画面（Week 3で実装） -->
+    <section id="live-screen" hidden>
+      <h2>応援中</h2>
+      <p>Week 3で実装します</p>
+    </section>
+
+    <!-- 試合後：ランキング画面（Week 3で実装） -->
+    <section id="post-match-screen" hidden>
+      <h2>試合終了</h2>
+      <p>Week 3で実装します</p>
+    </section>
+
+  </main>
+
+  <script type="module" src="firebase-config.js"></script>
+  <script type="module" src="jpn-match.js"></script>
+</body>
+</html>
