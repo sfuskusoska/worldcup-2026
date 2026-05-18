@@ -283,26 +283,97 @@ function listenLiveScore() {
   });
 }
 
+let hypeChart = null;
+
 function listenReactions() {
   onValue(ref(db, `matches/${MATCH_ID}/reactions`), (snap) => {
     const data = snap.val() || {};
-    const stream = document.getElementById("reaction-stream");
-    if (!stream) return;
+    renderReactionStream(data);
+    renderHypeChart(data);
+  });
+}
 
-    const emojiMap = { goal: "⚽", close: "😣", amazing: "🔥", foul: "😡" };
-    const labelMap = { goal: "ゴール！", close: "惜しい！", amazing: "すごい！", foul: "ファウル！" };
+function renderReactionStream(data) {
+  const stream = document.getElementById("reaction-stream");
+  if (!stream) return;
 
-    const entries = Object.values(data)
-      .sort((a, b) => b.submittedAt - a.submittedAt)
-      .slice(0, 30);
+  const emojiMap = { good: "👍", fight: "💪" };
+  const labelMap = { good: "ナイスプレー", fight: "もっとがんばれ" };
 
-    stream.innerHTML = entries.map(r => `
-      <div class="reaction-item">
-        <span class="reaction-emoji">${emojiMap[r.type] || "👋"}</span>
-        <span class="reaction-name">${r.nickname || "名無し"}</span>
-        <span class="reaction-label">${labelMap[r.type] || r.type}</span>
-      </div>
-    `).join("");
+  const entries = Object.values(data)
+    .sort((a, b) => b.submittedAt - a.submittedAt)
+    .slice(0, 20);
+
+  stream.innerHTML = entries.map(r => `
+    <div class="reaction-item">
+      <span class="reaction-emoji">${emojiMap[r.type] || "👋"}</span>
+      <span class="reaction-name">${r.nickname || "名無し"}</span>
+      <span class="reaction-label">${labelMap[r.type] || r.type}</span>
+    </div>
+  `).join("");
+}
+
+function renderHypeChart(data) {
+  const BUCKET_MS = 2 * 60 * 1000; // 2分バケット
+  const buckets = {};
+
+  Object.values(data).forEach(r => {
+    const bucket = Math.floor(r.submittedAt / BUCKET_MS) * BUCKET_MS;
+    if (!buckets[bucket]) buckets[bucket] = { good: 0, fight: 0 };
+    if (r.type === "good") buckets[bucket].good++;
+    if (r.type === "fight") buckets[bucket].fight++;
+  });
+
+  if (Object.keys(buckets).length === 0) return;
+
+  const sorted = Object.entries(buckets).sort((a, b) => a[0] - b[0]);
+  const labels = sorted.map(([ts]) => {
+    const d = new Date(Number(ts));
+    return `${d.getHours()}:${String(d.getMinutes()).padStart(2, "0")}`;
+  });
+  const goodData = sorted.map(([, v]) => v.good);
+  const fightData = sorted.map(([, v]) => v.fight);
+
+  const ctx = document.getElementById("hype-chart");
+  if (!ctx) return;
+
+  if (hypeChart) hypeChart.destroy();
+
+  hypeChart = new Chart(ctx.getContext("2d"), {
+    type: "line",
+    data: {
+      labels,
+      datasets: [
+        {
+          label: "👍 ナイスプレー",
+          data: goodData,
+          borderColor: "rgba(29, 78, 216, 0.9)",
+          backgroundColor: "rgba(29, 78, 216, 0.1)",
+          fill: true,
+          tension: 0.4,
+          pointRadius: 3
+        },
+        {
+          label: "💪 もっとがんばれ",
+          data: fightData,
+          borderColor: "rgba(200, 16, 46, 0.9)",
+          backgroundColor: "rgba(200, 16, 46, 0.1)",
+          fill: true,
+          tension: 0.4,
+          pointRadius: 3
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { position: "top", labels: { font: { size: 12 } } }
+      },
+      scales: {
+        y: { beginAtZero: true, ticks: { stepSize: 1 } },
+        x: { ticks: { maxTicksLimit: 10 } }
+      }
+    }
   });
 }
 

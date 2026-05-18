@@ -94,15 +94,14 @@
       <div class="card reaction-card">
         <h2>応援しよう！</h2>
         <div class="reaction-buttons">
-          <button class="reaction-btn" data-reaction="goal">⚽<br><span>ゴール！</span></button>
-          <button class="reaction-btn" data-reaction="close">😣<br><span>惜しい！</span></button>
-          <button class="reaction-btn" data-reaction="amazing">🔥<br><span>すごい！</span></button>
-          <button class="reaction-btn" data-reaction="foul">😡<br><span>ファウル！</span></button>
+          <button class="reaction-btn reaction-btn--good" data-reaction="good">👍<br><span>ナイスプレー</span></button>
+          <button class="reaction-btn reaction-btn--fight" data-reaction="fight">💪<br><span>もっとがんばれ</span></button>
         </div>
       </div>
 
       <div class="card stream-card">
-        <h2>みんなの声</h2>
+        <h2>盛り上がり</h2>
+        <canvas id="hype-chart"></canvas>
         <div id="reaction-stream" class="reaction-stream"></div>
       </div>
 

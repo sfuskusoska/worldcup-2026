@@ -466,36 +466,51 @@ body {
 .reaction-buttons {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 12px;
+  gap: 16px;
 }
 
 .reaction-btn {
   background: var(--color-bg);
   border: 2px solid var(--color-border);
-  border-radius: 12px;
-  padding: 16px 8px;
-  font-size: 2rem;
+  border-radius: 16px;
+  padding: 20px 8px;
+  font-size: 2.4rem;
   cursor: pointer;
-  transition: transform 0.1s, background 0.1s;
+  transition: transform 0.15s, background 0.15s, border-color 0.15s;
   text-align: center;
   line-height: 1.4;
 }
 
 .reaction-btn span {
   display: block;
-  font-size: 0.85rem;
-  font-weight: 600;
+  font-size: 0.9rem;
+  font-weight: 700;
   color: var(--color-text);
+  margin-top: 4px;
 }
 
-.reaction-btn:hover {
-  background: #f0f0f0;
+.reaction-btn--good:hover {
+  background: #eff6ff;
+  border-color: var(--color-secondary);
+}
+
+.reaction-btn--fight:hover {
+  background: #fef2f2;
+  border-color: var(--color-primary);
 }
 
 .reaction-btn.reaction-sent {
-  background: #dcfce7;
-  border-color: #16a34a;
-  transform: scale(1.08);
+  transform: scale(1.1);
+}
+
+.reaction-btn--good.reaction-sent {
+  background: #dbeafe;
+  border-color: var(--color-secondary);
+}
+
+.reaction-btn--fight.reaction-sent {
+  background: #fee2e2;
+  border-color: var(--color-primary);
 }
 
 /* ===== 試合中：リアクションストリーム ===== */
