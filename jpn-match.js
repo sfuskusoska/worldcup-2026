@@ -1,23 +1,28 @@
 // ===== 日本戦応援画面（jpn-match.html）のロジック =====
 import { db, NEXT_JAPAN_MATCH } from "./firebase-config.js";
-import { ref, set, get, onValue } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-database.js";
+import { ref, set, get, onValue, push } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-database.js";
 
 const MATCH_ID = NEXT_JAPAN_MATCH.id;
-const LOCK_BEFORE_MS = 5 * 60 * 1000; // キックオフ5分前でロック
+const LOCK_BEFORE_MS = 5 * 60 * 1000;
 
 let predictionChart = null;
+let currentScreen = null;
+let preMatchInited = false;
+let liveInited = false;
+let postInited = false;
 
 // ----- 起動 -----
 window.addEventListener("DOMContentLoaded", () => {
   initLoginForm();
   checkExistingSession();
+  initAdminPanel();
 });
 
 // ----- 既存セッションの確認 -----
 function checkExistingSession() {
   const nickname = localStorage.getItem("wc2026:nickname");
   const userId = localStorage.getItem("wc2026:userId");
-  if (nickname && userId) showPreMatchScreen();
+  if (nickname && userId) enterApp(userId);
 }
 
 // ----- ログインフォーム -----
@@ -46,7 +51,7 @@ function initLoginForm() {
     const userId = `${Date.now()}-${Math.random().toString(36).substr(2, 6)}`;
     localStorage.setItem("wc2026:nickname", nickname);
     localStorage.setItem("wc2026:userId", userId);
-    showPreMatchScreen();
+    enterApp(userId);
   });
 }
 
@@ -56,23 +61,55 @@ function showLoginError(msg) {
   el.hidden = false;
 }
 
-// ----- 試合前画面 -----
-async function showPreMatchScreen() {
+// ----- アプリ入場 → Firebase の status を監視して画面を切り替え -----
+function enterApp(userId) {
   document.getElementById("login-screen").hidden = true;
-  document.getElementById("pre-match-screen").hidden = false;
 
+  onValue(ref(db, `matches/${MATCH_ID}/status`), (snap) => {
+    const status = snap.val() || "pre";
+    switchScreen(status, userId);
+  });
+}
+
+function switchScreen(status, userId) {
+  ["pre-match-screen", "live-screen", "post-match-screen"].forEach(id => {
+    document.getElementById(id).hidden = true;
+  });
+
+  if (status === "pre") {
+    document.getElementById("pre-match-screen").hidden = false;
+    if (!preMatchInited) {
+      preMatchInited = true;
+      initPreMatchScreen(userId);
+    }
+  } else if (status === "live") {
+    document.getElementById("live-screen").hidden = false;
+    if (!liveInited) {
+      liveInited = true;
+      initLiveScreen(userId);
+    }
+  } else if (status === "post") {
+    document.getElementById("post-match-screen").hidden = false;
+    if (!postInited) {
+      postInited = true;
+      initPostMatchScreen(userId);
+    }
+  }
+
+  currentScreen = status;
+}
+
+// ===== 試合前画面 =====
+
+async function initPreMatchScreen(userId) {
   await loadSquadOptions();
   updateLockState();
   setInterval(updateLockState, 10000);
-
-  const userId = localStorage.getItem("wc2026:userId");
   await loadMyPrediction(userId);
-
   listenPredictions();
   initPredictionForm(userId);
 }
 
-// ----- 選手リスト読み込み -----
 async function loadSquadOptions() {
   try {
     const res = await fetch("./data/japan-squad.json");
@@ -91,7 +128,6 @@ async function loadSquadOptions() {
   }
 }
 
-// ----- ロック判定 -----
 function isLocked() {
   const kickoff = new Date(NEXT_JAPAN_MATCH.kickoff).getTime();
   return Date.now() >= kickoff - LOCK_BEFORE_MS;
@@ -109,7 +145,6 @@ function updateLockState() {
   form.querySelectorAll("input, select").forEach(el => el.disabled = locked);
 }
 
-// ----- 自分の予想を取得して表示 -----
 async function loadMyPrediction(userId) {
   const snap = await get(ref(db, `matches/${MATCH_ID}/predictions/${userId}`));
   if (!snap.exists()) return;
@@ -123,7 +158,6 @@ async function loadMyPrediction(userId) {
   showPredictionMessage(`予想済み（${pred.scoreHome}−${pred.scoreAway}）送信済みです。変更も可能です。`);
 }
 
-// ----- 予想フォーム送信 -----
 function initPredictionForm(userId) {
   const form = document.getElementById("prediction-form");
   if (!form) return;
@@ -165,7 +199,6 @@ function showPredictionMessage(msg) {
   el.hidden = false;
 }
 
-// ----- 全員の予想をリアルタイム取得 → チャート更新 -----
 function listenPredictions() {
   onValue(ref(db, `matches/${MATCH_ID}/predictions`), (snap) => {
     const data = snap.val() || {};
@@ -189,7 +222,6 @@ function renderChart(data) {
   document.getElementById("vote-count").textContent = total ? `（${total}票）` : "";
 
   const ctx = document.getElementById("prediction-chart").getContext("2d");
-
   if (predictionChart) predictionChart.destroy();
 
   predictionChart = new Chart(ctx, {
@@ -208,9 +240,7 @@ function renderChart(data) {
     options: {
       responsive: true,
       plugins: { legend: { display: false } },
-      scales: {
-        y: { beginAtZero: true, ticks: { stepSize: 1 } }
-      }
+      scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } }
     }
   });
 }
@@ -227,6 +257,204 @@ function renderList(data) {
       ${p.firstScorer ? `<span class="pred-scorer">${p.firstScorer}</span>` : ""}
     </div>
   `).join("");
+}
+
+// ===== 試合中画面 =====
+
+function initLiveScreen(userId) {
+  listenLiveScore();
+  listenReactions();
+  initReactionButtons(userId);
+}
+
+function listenLiveScore() {
+  onValue(ref(db, `matches/${MATCH_ID}/liveScore`), (snap) => {
+    const score = snap.val();
+    const homeEl = document.getElementById("live-score-home");
+    const awayEl = document.getElementById("live-score-away");
+    const minEl = document.getElementById("live-minute");
+    if (!homeEl) return;
+
+    if (score) {
+      homeEl.textContent = score.home ?? "-";
+      awayEl.textContent = score.away ?? "-";
+      minEl.textContent = score.minute ? `${score.minute}'` : "";
+    }
+  });
+}
+
+function listenReactions() {
+  onValue(ref(db, `matches/${MATCH_ID}/reactions`), (snap) => {
+    const data = snap.val() || {};
+    const stream = document.getElementById("reaction-stream");
+    if (!stream) return;
+
+    const emojiMap = { goal: "⚽", close: "😣", amazing: "🔥", foul: "😡" };
+    const labelMap = { goal: "ゴール！", close: "惜しい！", amazing: "すごい！", foul: "ファウル！" };
+
+    const entries = Object.values(data)
+      .sort((a, b) => b.submittedAt - a.submittedAt)
+      .slice(0, 30);
+
+    stream.innerHTML = entries.map(r => `
+      <div class="reaction-item">
+        <span class="reaction-emoji">${emojiMap[r.type] || "👋"}</span>
+        <span class="reaction-name">${r.nickname || "名無し"}</span>
+        <span class="reaction-label">${labelMap[r.type] || r.type}</span>
+      </div>
+    `).join("");
+  });
+}
+
+function initReactionButtons(userId) {
+  const nickname = localStorage.getItem("wc2026:nickname");
+  document.querySelectorAll(".reaction-btn").forEach(btn => {
+    btn.addEventListener("click", async () => {
+      const type = btn.dataset.reaction;
+      btn.classList.add("reaction-sent");
+      setTimeout(() => btn.classList.remove("reaction-sent"), 600);
+
+      try {
+        await push(ref(db, `matches/${MATCH_ID}/reactions`), {
+          type,
+          nickname,
+          userId,
+          submittedAt: Date.now()
+        });
+      } catch (e) {
+        console.error("reaction送信失敗", e);
+      }
+    });
+  });
+}
+
+// ===== 試合後画面 =====
+
+async function initPostMatchScreen(userId) {
+  const resultSnap = await get(ref(db, `matches/${MATCH_ID}/result`));
+  const result = resultSnap.val();
+
+  if (result) {
+    document.getElementById("final-home").textContent = result.homeScore ?? "-";
+    document.getElementById("final-away").textContent = result.awayScore ?? "-";
+    if (result.firstScorer) {
+      document.getElementById("first-scorer-result").textContent =
+        `最初の得点者：${result.firstScorer}`;
+    }
+  }
+
+  const predsSnap = await get(ref(db, `matches/${MATCH_ID}/predictions`));
+  const predictions = predsSnap.val() || {};
+  renderRanking(predictions, result, userId);
+}
+
+function getMatchResult(home, away) {
+  if (home > away) return "home";
+  if (away > home) return "away";
+  return "draw";
+}
+
+function calculatePoints(pred, result) {
+  if (!result) return 0;
+  let pts = 0;
+
+  if (pred.scoreHome === result.homeScore && pred.scoreAway === result.awayScore) {
+    pts += 5;
+  } else if (getMatchResult(pred.scoreHome, pred.scoreAway) === getMatchResult(result.homeScore, result.awayScore)) {
+    pts += 2;
+  }
+
+  if (pred.firstScorer && result.firstScorer && pred.firstScorer === result.firstScorer) {
+    pts += 3;
+  }
+
+  return pts;
+}
+
+function renderRanking(predictions, result, myUserId) {
+  const ranked = Object.entries(predictions)
+    .map(([uid, pred]) => ({
+      uid,
+      nickname: pred.nickname || "名無し",
+      scoreHome: pred.scoreHome,
+      scoreAway: pred.scoreAway,
+      firstScorer: pred.firstScorer,
+      points: calculatePoints(pred, result)
+    }))
+    .sort((a, b) => b.points - a.points);
+
+  const medals = ["🥇", "🥈", "🥉"];
+  const list = document.getElementById("ranking-list");
+
+  list.innerHTML = ranked.map((entry, i) => `
+    <div class="ranking-item ${entry.uid === myUserId ? "is-mine" : ""}">
+      <span class="rank-medal">${medals[i] || `${i + 1}`}</span>
+      <span class="rank-name">${entry.nickname}</span>
+      <span class="rank-prediction">${entry.scoreHome}−${entry.scoreAway}</span>
+      ${entry.firstScorer ? `<span class="rank-scorer">${entry.firstScorer}</span>` : ""}
+      <span class="rank-points">${entry.points}pt</span>
+    </div>
+  `).join("");
+}
+
+// ===== 管理者パネル =====
+
+function initAdminPanel() {
+  const isAdmin = new URLSearchParams(location.search).get("admin") === "1";
+  const panel = document.getElementById("admin-panel");
+  if (!isAdmin || !panel) return;
+
+  panel.hidden = false;
+
+  // 選手リストをadminにも読み込む
+  fetch("./data/japan-squad.json")
+    .then(r => r.json())
+    .then(data => {
+      const sel = document.getElementById("admin-first-scorer");
+      data.players.forEach(p => {
+        const opt = document.createElement("option");
+        opt.value = p.name;
+        opt.textContent = p.name;
+        sel.appendChild(opt);
+      });
+    })
+    .catch(() => {});
+
+  // ステータス更新
+  document.getElementById("admin-status-btn").addEventListener("click", async () => {
+    const status = document.getElementById("admin-status").value;
+    await set(ref(db, `matches/${MATCH_ID}/status`), status);
+    showAdminMessage(`ステータスを「${status}」に更新しました`);
+  });
+
+  // ライブスコア更新
+  document.getElementById("admin-live-btn").addEventListener("click", async () => {
+    const home = parseInt(document.getElementById("admin-live-home").value, 10);
+    const away = parseInt(document.getElementById("admin-live-away").value, 10);
+    const minute = parseInt(document.getElementById("admin-live-minute").value, 10);
+    if (isNaN(home) || isNaN(away)) { showAdminMessage("スコアを入力してください"); return; }
+    await set(ref(db, `matches/${MATCH_ID}/liveScore`), {
+      home, away, minute: isNaN(minute) ? null : minute
+    });
+    showAdminMessage(`ライブスコアを ${home}−${away}（${minute || "?"}分）に更新しました`);
+  });
+
+  // 最終結果確定
+  document.getElementById("admin-final-btn").addEventListener("click", async () => {
+    const homeScore = parseInt(document.getElementById("admin-final-home").value, 10);
+    const awayScore = parseInt(document.getElementById("admin-final-away").value, 10);
+    const firstScorer = document.getElementById("admin-first-scorer").value || null;
+    if (isNaN(homeScore) || isNaN(awayScore)) { showAdminMessage("スコアを入力してください"); return; }
+    await set(ref(db, `matches/${MATCH_ID}/result`), { homeScore, awayScore, firstScorer });
+    await set(ref(db, `matches/${MATCH_ID}/status`), "post");
+    showAdminMessage(`最終結果 ${homeScore}−${awayScore} を確定しました。ステータスを post に変更しました。`);
+  });
+}
+
+function showAdminMessage(msg) {
+  const el = document.getElementById("admin-message");
+  el.textContent = msg;
+  setTimeout(() => { el.textContent = ""; }, 4000);
 }
 
 // ----- SHA-256 -----

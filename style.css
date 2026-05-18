@@ -401,3 +401,319 @@ body {
   padding: 24px 16px;
   font-size: 0.85rem;
 }
+
+/* ===== 試合中：ライブスコア ===== */
+.live-score-card {
+  text-align: center;
+}
+
+.live-badge {
+  display: inline-block;
+  background: var(--color-primary);
+  color: #fff;
+  font-size: 0.8rem;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 4px;
+  margin-bottom: 12px;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+.live-score-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  margin-bottom: 8px;
+}
+
+.live-team {
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.live-score-nums {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 3rem;
+  font-weight: 700;
+  color: var(--color-primary);
+}
+
+.live-colon {
+  color: var(--color-text-sub);
+  font-size: 2rem;
+}
+
+.live-minute {
+  color: var(--color-text-sub);
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+/* ===== 試合中：応援ボタン ===== */
+.reaction-card h2,
+.stream-card h2 {
+  margin-bottom: 16px;
+}
+
+.reaction-buttons {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+.reaction-btn {
+  background: var(--color-bg);
+  border: 2px solid var(--color-border);
+  border-radius: 12px;
+  padding: 16px 8px;
+  font-size: 2rem;
+  cursor: pointer;
+  transition: transform 0.1s, background 0.1s;
+  text-align: center;
+  line-height: 1.4;
+}
+
+.reaction-btn span {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.reaction-btn:hover {
+  background: #f0f0f0;
+}
+
+.reaction-btn.reaction-sent {
+  background: #dcfce7;
+  border-color: #16a34a;
+  transform: scale(1.08);
+}
+
+/* ===== 試合中：リアクションストリーム ===== */
+.reaction-stream {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.reaction-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+  background: var(--color-bg);
+  border-radius: 8px;
+  font-size: 0.9rem;
+}
+
+.reaction-emoji {
+  font-size: 1.4rem;
+}
+
+.reaction-name {
+  font-weight: 600;
+  flex: 1;
+}
+
+.reaction-label {
+  color: var(--color-text-sub);
+  font-size: 0.85rem;
+}
+
+/* ===== 試合後：最終結果 ===== */
+.final-result-card {
+  text-align: center;
+}
+
+.final-result-card h2 {
+  margin-bottom: 12px;
+}
+
+.final-score-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  margin-bottom: 8px;
+}
+
+.final-team {
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.final-score-nums {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 3rem;
+  font-weight: 700;
+  color: #fff;
+}
+
+.first-scorer-result {
+  font-size: 0.9rem;
+  opacity: 0.85;
+  margin-top: 4px;
+}
+
+/* ===== 試合後：ランキング ===== */
+.ranking-card h2 {
+  margin-bottom: 8px;
+}
+
+.points-legend {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  font-size: 0.78rem;
+  color: var(--color-text-sub);
+  margin-bottom: 16px;
+  padding: 8px 12px;
+  background: var(--color-bg);
+  border-radius: 6px;
+}
+
+.ranking-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.ranking-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  background: var(--color-bg);
+  border-radius: 8px;
+  font-size: 0.9rem;
+}
+
+.ranking-item.is-mine {
+  background: #fef2f2;
+  border-left: 3px solid var(--color-primary);
+}
+
+.rank-medal {
+  font-size: 1.2rem;
+  min-width: 28px;
+  text-align: center;
+}
+
+.rank-name {
+  flex: 1;
+  font-weight: 600;
+}
+
+.rank-prediction {
+  font-weight: 700;
+  color: var(--color-primary);
+}
+
+.rank-scorer {
+  color: var(--color-text-sub);
+  font-size: 0.8rem;
+}
+
+.rank-points {
+  font-weight: 700;
+  font-size: 1rem;
+  min-width: 40px;
+  text-align: right;
+  color: var(--color-secondary);
+}
+
+/* ===== 管理者パネル ===== */
+.admin-panel {
+  border: 2px dashed #f59e0b;
+  background: #fffbeb;
+}
+
+.admin-panel h2 {
+  margin-bottom: 16px;
+  color: #92400e;
+}
+
+.admin-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.admin-row label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-text-sub);
+  min-width: 100px;
+}
+
+.admin-score-input {
+  width: 60px;
+  padding: 6px;
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  font-size: 0.95rem;
+  text-align: center;
+}
+
+.admin-scorer-select {
+  padding: 6px;
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  font-size: 0.9rem;
+  max-width: 160px;
+}
+
+.admin-btn {
+  background: #f59e0b;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 7px 14px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.admin-btn:hover {
+  opacity: 0.85;
+}
+
+.admin-message {
+  font-size: 0.85rem;
+  color: #166534;
+  margin-top: 4px;
+  min-height: 1.2em;
+}
+
+/* ===== 試合中・試合後のカードスペース ===== */
+#live-screen,
+#post-match-screen {
+  padding: 16px;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+#live-screen .card,
+#post-match-screen .card {
+  margin-bottom: 16px;
+}
+
+#admin-panel {
+  max-width: 600px;
+  margin: 0 auto 24px;
+}

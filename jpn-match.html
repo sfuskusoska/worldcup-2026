@@ -74,17 +74,105 @@
 
     </section>
 
-    <!-- 試合中：感情ボタン画面（Week 3で実装） -->
+    <!-- 試合中：応援画面 -->
     <section id="live-screen" hidden>
-      <h2>応援中</h2>
-      <p>Week 3で実装します</p>
+
+      <div class="card card-primary live-score-card">
+        <div class="live-badge">🔴 LIVE</div>
+        <div class="live-score-row">
+          <span class="live-team">🇯🇵 日本</span>
+          <span class="live-score-nums">
+            <span id="live-score-home">-</span>
+            <span class="live-colon">:</span>
+            <span id="live-score-away">-</span>
+          </span>
+          <span class="live-team">🇳🇱 オランダ</span>
+        </div>
+        <div id="live-minute" class="live-minute"></div>
+      </div>
+
+      <div class="card reaction-card">
+        <h2>応援しよう！</h2>
+        <div class="reaction-buttons">
+          <button class="reaction-btn" data-reaction="goal">⚽<br><span>ゴール！</span></button>
+          <button class="reaction-btn" data-reaction="close">😣<br><span>惜しい！</span></button>
+          <button class="reaction-btn" data-reaction="amazing">🔥<br><span>すごい！</span></button>
+          <button class="reaction-btn" data-reaction="foul">😡<br><span>ファウル！</span></button>
+        </div>
+      </div>
+
+      <div class="card stream-card">
+        <h2>みんなの声</h2>
+        <div id="reaction-stream" class="reaction-stream"></div>
+      </div>
+
     </section>
 
-    <!-- 試合後：ランキング画面（Week 3で実装） -->
+    <!-- 試合後：ランキング画面 -->
     <section id="post-match-screen" hidden>
-      <h2>試合終了</h2>
-      <p>Week 3で実装します</p>
+
+      <div class="card card-primary final-result-card">
+        <h2>試合終了</h2>
+        <div class="final-score-row">
+          <span class="final-team">🇯🇵 日本</span>
+          <span class="final-score-nums">
+            <span id="final-home">-</span>
+            <span>−</span>
+            <span id="final-away">-</span>
+          </span>
+          <span class="final-team">🇳🇱 オランダ</span>
+        </div>
+        <div id="first-scorer-result" class="first-scorer-result"></div>
+      </div>
+
+      <div class="card ranking-card">
+        <h2>🏆 予想ランキング</h2>
+        <div class="points-legend">
+          <span>完全一致 5pt</span>
+          <span>勝敗一致 2pt</span>
+          <span>得点者一致 +3pt</span>
+        </div>
+        <div id="ranking-list" class="ranking-list"></div>
+      </div>
+
     </section>
+
+    <!-- 管理者パネル（URL に ?admin=1 を付けると表示） -->
+    <div id="admin-panel" class="card admin-panel" hidden>
+      <h2>⚙️ 管理者パネル</h2>
+
+      <div class="admin-row">
+        <label>試合ステータス</label>
+        <select id="admin-status">
+          <option value="pre">試合前 (pre)</option>
+          <option value="live">試合中 (live)</option>
+          <option value="post">試合後 (post)</option>
+        </select>
+        <button id="admin-status-btn" class="admin-btn">更新</button>
+      </div>
+
+      <div class="admin-row">
+        <label>ライブスコア</label>
+        <input type="number" id="admin-live-home" min="0" max="9" placeholder="日本" class="admin-score-input">
+        <span>−</span>
+        <input type="number" id="admin-live-away" min="0" max="9" placeholder="相手" class="admin-score-input">
+        <input type="number" id="admin-live-minute" min="1" max="120" placeholder="分" class="admin-score-input">
+        <button id="admin-live-btn" class="admin-btn">スコア更新</button>
+      </div>
+
+      <div class="admin-row">
+        <label>最終結果</label>
+        <input type="number" id="admin-final-home" min="0" max="9" placeholder="日本" class="admin-score-input">
+        <span>−</span>
+        <input type="number" id="admin-final-away" min="0" max="9" placeholder="相手" class="admin-score-input">
+        <select id="admin-first-scorer" class="admin-scorer-select">
+          <option value="">得点者なし</option>
+        </select>
+        <button id="admin-final-btn" class="admin-btn">結果確定</button>
+      </div>
+
+      <p id="admin-message" class="admin-message"></p>
+    </div>
 
   </main>
 
